@@ -330,3 +330,6 @@ Example:
 Get all the notification of the registry operations for the process "notepad.exe".
 
 AddRegistryFilterRuleByProcessName(wcslen(L"notepad.exe")*2, L"notepad.exe",REG_MAX_ACCESS_FLAG,MAX_REG_CALLBACK_CLASS,0 );
+
+For more information, please go to here:
+https://www.easefilter.com/programming.htm
