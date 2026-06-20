@@ -108,6 +108,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -154,6 +155,12 @@
     </Compile>
     <Compile Include="TutorialForm.Designer.cs">
       <DependentUpon>TutorialForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowsService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WindowsService.Designer.cs">
+      <DependentUpon>WindowsService.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="DecryptionForm.resx">
       <DependentUpon>DecryptionForm.cs</DependentUpon>

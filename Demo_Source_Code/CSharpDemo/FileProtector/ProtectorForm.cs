@@ -198,12 +198,12 @@ namespace FileProtector
         }
 
 
-        private void toolStripButton_StartFilter_Click(object sender, EventArgs e)
+        public void toolStripButton_StartFilter_Click(object sender, EventArgs e)
         {
             try
             {
                 //To request a trial or production license key, please contact info@easefilter.com
-                //Requests from free email domains are not accepted        
+                //Requests from free email domains are not accepted.        
                 string licenseKey = GlobalConfig.LicenseKey;
 
                 string lastError = string.Empty;
@@ -234,7 +234,7 @@ namespace FileProtector
         }
 
 
-        private void toolStripButton_Stop_Click(object sender, EventArgs e)
+        public void toolStripButton_Stop_Click(object sender, EventArgs e)
         {
             filterControl.StopFilter();
 

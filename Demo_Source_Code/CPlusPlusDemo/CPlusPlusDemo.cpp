@@ -97,8 +97,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	ULONG	filterType = FILE_SYSTEM_MONITOR;
 	BOOL	ret = FALSE;
 	
-	PrintPassedMessage(L"test Install filter driver succeeded!");
-
 	if(argc <= 1)
 	{
 		Usage();
@@ -109,12 +107,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	EnableDebugPrivileges();
 
-	PrintPassedMessage(L"before Install filter driver succeeded!");
-
 	FilterControl* filterControl = FilterControl::GetSingleInstance();
-
-	//
-	PrintPassedMessage(L"after Install filter driver succeeded!");
 
 	switch(op)
 	{

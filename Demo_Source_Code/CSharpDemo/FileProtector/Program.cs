@@ -17,7 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ServiceProcess;
 using System.Windows.Forms;
 
 using EaseFilter.FilterControl;
@@ -56,6 +56,20 @@ namespace FileProtector
                             {
                                 Console.WriteLine("UnInstall driver failed:" + FilterAPI.GetLastErrorMessage());
                             }
+
+                            break;
+                        }
+
+                    case "-service":
+                        {
+                            //To run the FileProtector as Windows service, you need to install the Windows service in Dos prompt with admin privilege
+                            //sc create FileProtector binPath= "c:\EaseFilterInallPath\FileProtector.exe -service" start= auto
+                            //after the FileProtector service was installed, you can start the service with below command:
+                            //sc start FileProtector
+
+                            Console.WriteLine("Starting FileProtector windows service...");
+                            WindowsService service = new WindowsService();
+                            ServiceBase.Run(service);
 
                             break;
                         }
