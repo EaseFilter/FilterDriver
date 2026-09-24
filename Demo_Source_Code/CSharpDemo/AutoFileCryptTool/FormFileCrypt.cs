@@ -97,7 +97,7 @@ namespace AutoFileCryptTool
 
             FileFilter dropFolderFileFilter = new FileFilter(GlobalConfig.DropFolder + "\\*");
             //enable the encryption, it is for decryption, disable encrypt new file since the file was encrypted in this folder.
-            dropFolderFileFilter.AccessFlags = (FilterAPI.AccessFlag)((FilterAPI.ALLOW_MAX_RIGHT_ACCESS | (uint)FilterAPI.AccessFlag.ENABLE_FILE_ENCRYPTION_RULE) & (~(uint)FilterAPI.AccessFlag.ALLOW_ENCRYPT_NEW_FILE));
+            dropFolderFileFilter.AccessFlags = (FilterAPI.AccessFlag)((FilterAPI.ALLOW_MAX_ACCESS_RIGHT | (uint)FilterAPI.AccessFlag.ENABLE_FILE_ENCRYPTION_RULE) & (~(uint)FilterAPI.AccessFlag.ALLOW_ENCRYPT_NEW_FILE));
             dropFolderFileFilter.EncryptionPassPhrase = GlobalConfig.MasterPassword;
             dropFolderFileFilter.EncryptionIV = Utils.GetIVByPassPhrase(GlobalConfig.MasterPassword);
             
@@ -159,7 +159,7 @@ namespace AutoFileCryptTool
                     if (unAuthorizedProcess.Trim().Length > 0)
                     {
                         //can't read the encrypted files
-                        uint accessFlag = FilterAPI.ALLOW_MAX_RIGHT_ACCESS & (uint)(~FilterAPI.AccessFlag.ALLOW_READ_ENCRYPTED_FILES);
+                        uint accessFlag = FilterAPI.ALLOW_MAX_ACCESS_RIGHT & (uint)(~FilterAPI.AccessFlag.ALLOW_READ_ENCRYPTED_FILES);
                         autoEncrytFilter.AddTrustedProcessRight(accessFlag, unAuthorizedProcess.Trim(), "", "");
                     }
                 }
@@ -343,7 +343,7 @@ namespace AutoFileCryptTool
         {
 
             //To request a trial or production license key, please contact info@easefilter.com
-            //Requests from free email domains are not accepted        
+            //Requests from free email domains are not accepted.        
             string licenseKey = GlobalConfig.LicenseKey;
 
             GlobalConfig.filterType = FilterAPI.FilterType.CONTROL_FILTER | FilterAPI.FilterType.ENCRYPTION_FILTER | FilterAPI.FilterType.PROCESS_FILTER;

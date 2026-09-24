@@ -11,6 +11,10 @@ SendProcessFilterNotification(PMESSAGE_SEND_DATA messageSend)
     if (messageSend->FilterCommand == FILTER_SEND_DENIED_PROCESS_CREATION_EVENT)
     {
         processEventArgs->EventName = L"ProcessCreationWasBlocked";		
+        if (messageSend->MessageType == DENY_CHILD_PROCESS_CREATION)
+        {
+            processEventArgs->EventName = L"ChildProcessCreationWasBlocked";
+        }
     }
     else if (messageSend->FilterCommand == FILTER_SEND_DENIED_PROCESS_TERMINATED_EVENT)
     {

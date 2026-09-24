@@ -95,7 +95,7 @@ namespace FileProtector
         private static string globalExcludeFilterRuleTestFile = unitTestFolder + "\\excludeFilterRuleFolder\\excludeFilterRuleTestFile.txt";
 
         //To request a trial or production license key, please contact info@easefilter.com
-        //Requests from free email domains are not accepted
+        //Requests from free email domains are not accepted.
         public static string licenseKey = "******************************************";
 
         public FileProtectorUnitTest()
@@ -334,7 +334,7 @@ namespace FileProtector
 
 
             FileFilter monitorFilterRule = new FileFilter(unitTestMonitorTestFolder + "\\*");
-            monitorFilterRule.AccessFlags = (FilterAPI.AccessFlag)FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+            monitorFilterRule.AccessFlags = (FilterAPI.AccessFlag)FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
             monitorFilterRule.FileChangeEventFilter = (FilterAPI.FileChangedEvents.NotifyFileWasCreated | FilterAPI.FileChangedEvents.NotifyFileWasDeleted | FilterAPI.FileChangedEvents.NotifyFileInfoWasChanged
                 | FilterAPI.FileChangedEvents.NotifyFileWasRenamed | FilterAPI.FileChangedEvents.NotifyFileWasWritten | FilterAPI.FileChangedEvents.NotifyFileSecurityWasChanged | FilterAPI.FileChangedEvents.NotifyFileWasRead);
 
@@ -579,7 +579,7 @@ namespace FileProtector
             FileFilter blockAccessFilter = new FileFilter(unitTestFolder + "\\*");
 
             //Remove all access rights for the process "cmd".
-            blockAccessFilter.AddTrustedProcessRight(((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG), "cmd.exe", "", "");
+            blockAccessFilter.AddTrustedProcessRight(((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT), "cmd.exe", "", "");
 
             try
             {
@@ -640,7 +640,7 @@ namespace FileProtector
             FileFilter blockAccessFilter = new FileFilter(unitTestFolder + "\\*");
 
             //Remove all access rights to the current user.
-            blockAccessFilter.UserAccessRightList.Add(userName,((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG));
+            blockAccessFilter.UserAccessRightList.Add(userName,((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT));
 
             try
             {
@@ -700,7 +700,7 @@ namespace FileProtector
             FileFilter noRenameFilter = new FileFilter(unitTestFolder + "*.prt");
             noRenameFilter.EnableRenameOrMoveFile = false;
             noRenameFilter.EnableDeleteFile = false;
-            noRenameFilter.EnableFileBeingCopied = false;
+            noRenameFilter.AllowFileSaveAs = false;
 
             FileFilter globalExcludeFilter = new FileFilter(filterRuleExcludeTestFolder + "\\*");
 

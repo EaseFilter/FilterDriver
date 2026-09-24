@@ -183,8 +183,18 @@ namespace EaseFilter.FilterControl
 
                 if (Utils.IsDriverChanged())
                 {
+                    Console.WriteLine("Driver was chaged, uninstalling the previous driver.");
+
                     //uninstall or install driver needs the Admin permission.
-                    FilterAPI.UnInstallDriver();
+                    if (FilterAPI.UnInstallDriver())
+                    {
+                        Console.WriteLine("Previous driver was uninstalled.");
+                    }
+                    else
+                    {
+                        lastError = "Uninstall driver failed with error:" + FilterAPI.GetLastErrorMessage();
+                        Console.WriteLine(lastError);
+                    }
 
                     //wait for 3 seconds for the uninstallation completed.
                     System.Threading.Thread.Sleep(3000);
@@ -192,12 +202,18 @@ namespace EaseFilter.FilterControl
 
                 if (!FilterAPI.IsDriverServiceRunning())
                 {
+                    Console.WriteLine("Intalling the driver.");
+
                     ret = FilterAPI.InstallDriver();
                     if (!ret)
                     {
                         lastError = "Installed driver failed with error:" + FilterAPI.GetLastErrorMessage();
+                        Console.WriteLine(lastError);
+
                         return false;
                     }
+
+                    Console.WriteLine("The driver installation succeeded.");
                 }
 
 
@@ -789,6 +805,16 @@ namespace EaseFilter.FilterControl
                             if (!FilterAPI.AddUserRightsToFilterRule(fileFilter.IncludeFileFilterMask, userName.Trim(), accessFlags))
                             {
                                 lastError = "AddUserRightsToFilterRule " + fileFilter.IncludeFileFilterMask + ",userName:" + userName + ",accessFlags:" + accessFlags + " failed:" + FilterAPI.GetLastErrorMessage();
+                                return false;
+                            }
+                        }
+
+                        foreach (TimeRestrictionBlock entry in fileFilter.TimeRestrictionBlockList)
+                        {
+                            if (!FilterAPI.AddTimeRestrictionToFilterRule(fileFilter.IncludeFileFilterMask, entry.accessFlag, entry.startTime, entry.endTime))
+                            {
+                                lastError = "AddTimeRestrictionToFilterRule " + fileFilter.IncludeFileFilterMask + ",accessFlag:" + entry.accessFlag 
+                                    + ",startTime:" + entry.startTime + ",endTime:" + entry.endTime + " failed:" + FilterAPI.GetLastErrorMessage();
                                 return false;
                             }
                         }

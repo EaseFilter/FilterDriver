@@ -1092,7 +1092,6 @@
 		ProcessEventArgs(PMESSAGE_SEND_DATA messageSend) : FileIOEventArgs(messageSend)
         {
             ImageFileName = messageSend->FileName;
-            ProcessName = messageSend->FileName;
 
             if (messageSend->DataBufferLength > 0)
             {
@@ -1109,9 +1108,10 @@
                 switch (messageSend->FilterCommand)
                 {
                     case FILTER_SEND_PROCESS_CREATION_INFO:
+                    case FILTER_SEND_DENIED_PROCESS_CREATION_EVENT:
                         {
-                            Description = L"New process was created, parentPid:" + std::to_wstring((ULONGLONG)ParentProcessId) + L";CreatingPid:" + std::to_wstring((ULONGLONG)CreatingProcessId) 
-								+ L";CreatingThreadId:" + std::to_wstring((ULONGLONG)CreatingThreadId) + L";CommandLine:" + CommandLine;
+                            Description = L"Parent ProcessId:" + std::to_wstring((ULONGLONG)ParentProcessId)  
+								 + L";CommandLine:" + CommandLine;
 
                             break;
                         }
@@ -1122,7 +1122,7 @@
                     }
 					case FILTER_SEND_LOAD_IMAGE_NOTIFICATION:
 						{
-							Description = L"The image " + ImageFileName + L" was loaded.";
+							Description = L"The image " + ImageFileName + L" was loaded by " + ProcessName;
 							break;
 						}
 					case FILTER_SEND_THREAD_CREATION_INFO:

@@ -211,7 +211,7 @@ EncryptionHandler(
 		messageReply->ReplyData.AESData.Data.IVLength = 0;
 	}
 
-	messageReply->ReplyData.AESData.Data.AccessFlag = ALLOW_MAX_RIGHT_ACCESS;
+	messageReply->ReplyData.AESData.Data.AccessFlag = ALLOW_MAX_ACCESS_RIGHT;
 
 	//here is the encryption key for the encrypted file, you can set it with your own key.
 	messageReply->ReplyData.AESData.Data.EncryptionKeyLength = 32;

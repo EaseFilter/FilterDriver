@@ -34,10 +34,9 @@ namespace EaseFilter.CommonObjects
         public enum AccessRightType
         {
             ProcessNameRight = 0,
-            Sha256Process,
-            SignedProcess,
             ProccessIdRight,
             UserNameRight,
+            TimeRestrict,
         }
 
         AccessRightType type = AccessRightType.ProccessIdRight;
@@ -53,10 +52,39 @@ namespace EaseFilter.CommonObjects
 
             textBox_UserName.Text = Environment.UserDomainName + "\\" + Environment.UserName;
 
-           textBox_FileAccessFlags.Text = FilterAPI.ALLOW_MAX_RIGHT_ACCESS.ToString();
+           textBox_FileAccessFlags.Text = FilterAPI.ALLOW_MAX_ACCESS_RIGHT.ToString();
           
             switch (type)
             {
+                case AccessRightType.TimeRestrict:
+                    {
+                        groupBox_AccessRights.Location = groupBox_ProcessId.Location;
+                        groupBox_TimeRestrict.Visible = true;
+
+                        string[] timeRestricts = accessRightText.Split(new char[] { ';' });
+                        if (timeRestricts.Length > 0)
+                        {
+                            string[] entries = timeRestricts[0].Split(new char[] { '|' });
+                            if (entries.Length > 2)
+                            {
+                                uint accessFlags = uint.Parse(entries[0]);
+                                long startTime = long.Parse(entries[1]);
+                                long endTime = long.Parse(entries[2]);
+
+                                textBox_FileAccessFlags.Text = accessFlags.ToString();
+                                if (startTime > 0)
+                                {
+                                    dateTimePicker_StartTime.Value = DateTime.Today.AddMinutes(startTime);
+                                }
+                                if (endTime > 0)
+                                {
+                                    dateTimePicker_EndTime.Value = DateTime.Today.AddMinutes(endTime);
+                                }
+                            }
+                        }
+
+                        break;
+                    }
                 case AccessRightType.ProcessNameRight:
                     {
                         groupBox_AccessRights.Location = groupBox_UserName.Location;
@@ -157,6 +185,24 @@ namespace EaseFilter.CommonObjects
                         if (textBox_ProcessId.Text.Trim().Length > 0)
                         {
                             accessRightText = textBox_ProcessId.Text.Trim() + "|" + textBox_FileAccessFlags.Text;
+                        }
+
+                        break;
+                    }
+
+                case AccessRightType.TimeRestrict:
+                    {
+                        long elapsedMinutesStartTime = (long)dateTimePicker_StartTime.Value.TimeOfDay.TotalMinutes;
+                        long elapsedMinutesEndTime = (long)dateTimePicker_EndTime.Value.TimeOfDay.TotalMinutes;
+
+                        if (elapsedMinutesEndTime > elapsedMinutesStartTime)
+                        {
+                            accessRightText = textBox_FileAccessFlags.Text.Trim() + "|" + elapsedMinutesStartTime + "|" + elapsedMinutesEndTime;
+                        }
+                        else
+                        {
+                            MessageBox.Show("The end can't be greater than the start time", "Time setting error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                         }
 
                         break;
@@ -285,7 +331,7 @@ namespace EaseFilter.CommonObjects
                 else
                 {
                     //if the accessFlag is 0, it is exclude filter rule,this is not what we want, so we need to include this flag.
-                    textBox_FileAccessFlags.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG).ToString();
+                    textBox_FileAccessFlags.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT).ToString();
                 }
 
                 SetCheckBoxValue();

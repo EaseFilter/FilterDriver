@@ -26,7 +26,7 @@ namespace SecureSandbox
             StartPosition = FormStartPosition.CenterParent;
 
             textBox_FileMask.Text = processFilter.ProcessNameFilterMask;
-            textBox_AccessFlag.Text = FilterAPI.ALLOW_MAX_RIGHT_ACCESS.ToString();
+            textBox_AccessFlag.Text = FilterAPI.ALLOW_MAX_ACCESS_RIGHT.ToString();
 
             currentProcessFilter = processFilter;
             foreach (KeyValuePair<string, uint> entry in processFilter.FileAccessRightList)
@@ -186,7 +186,7 @@ namespace SecureSandbox
                 else
                 {
                     //if the accessFlag is 0, it is exclude filter rule,this is not what we want, so we need to include this flag.
-                    textBox_AccessFlag.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG).ToString();
+                    textBox_AccessFlag.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT).ToString();
                 }
 
                 SetCheckBoxValue();
@@ -346,7 +346,7 @@ namespace SecureSandbox
 
             if (0 == fileAccessRight.AccessFlag)
             {
-                fileAccessRight.AccessFlag = (uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG;
+                fileAccessRight.AccessFlag = (uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT;
             }
 
             processFileAccessRightsList.Remove(fileAccessRight.FileNameMask);

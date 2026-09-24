@@ -107,7 +107,7 @@ namespace  SecureShare
                     string authorizedComputerIds = string.Empty;
                     string authorizedIps = string.Empty;
                     string fileName = e.FileName;
-                    uint accessFlags = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+                    uint accessFlags = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
 
                     long expireDateTime = GlobalConfig.ShareFileExpireTime;
 
@@ -218,7 +218,7 @@ namespace  SecureShare
                 {
                     if (authorizedProcess.Trim().Length > 0)
                     {
-                        autoEncryptFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_RIGHT_ACCESS, authorizedProcess, "", "");
+                        autoEncryptFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_ACCESS_RIGHT, authorizedProcess, "", "");
                     }
                 }
             }
@@ -232,7 +232,7 @@ namespace  SecureShare
                     if (unAuthorizedProcess.Trim().Length > 0)
                     {
                         //can't read the encrypted files
-                        uint accessFlag = FilterAPI.ALLOW_MAX_RIGHT_ACCESS & (uint)(~FilterAPI.AccessFlag.ALLOW_READ_ENCRYPTED_FILES);
+                        uint accessFlag = FilterAPI.ALLOW_MAX_ACCESS_RIGHT & (uint)(~FilterAPI.AccessFlag.ALLOW_READ_ENCRYPTED_FILES);
                         autoEncryptFilter.AddTrustedProcessRight(accessFlag, unAuthorizedProcess, "", "");
 
                     }
@@ -276,7 +276,7 @@ namespace  SecureShare
             try
             {
                 //To request a trial or production license key, please contact info@easefilter.com
-                //Requests from free email domains are not accepted        
+                //Requests from free email domains are not accepted.        
                 string licenseKey = GlobalConfig.LicenseKey;
 
                 string lastError = string.Empty;
@@ -385,8 +385,9 @@ namespace  SecureShare
             MessageBox.Show(helpInfo, "How to use this application?", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void toolStripButton_ApplyTrialKey_Click(object sender, EventArgs e)
+        private void toolStripButton_VideoDemo_Click(object sender, EventArgs e)
         {
+            System.Diagnostics.Process.Start("https://youtu.be/KTsqS9A6W3Q?si=C5eymNMgIXBFSeMu");
         }
 
         private void toolStripButton_ClearMessage_Click(object sender, EventArgs e)

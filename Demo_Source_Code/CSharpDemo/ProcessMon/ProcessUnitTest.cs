@@ -187,7 +187,7 @@ namespace ProcessMon
                 ProcessFilter processFilter = new ProcessFilter("");
                 processFilter.ControlFlag = 0;
                 processFilter.ProcessId = FilterAPI.GetCurrentProcessId();
-                uint accessFlag = FilterAPI.ALLOW_MAX_RIGHT_ACCESS & (uint)~FilterAPI.AccessFlag.ALLOW_OPEN_WITH_CREATE_OR_OVERWRITE_ACCESS;
+                uint accessFlag = FilterAPI.ALLOW_MAX_ACCESS_RIGHT & (uint)~FilterAPI.AccessFlag.ALLOW_OPEN_WITH_CREATE_OR_OVERWRITE_ACCESS;
                 processFilter.FileAccessRightList.Add("*", accessFlag);
 
                 filterControl.ClearFilters();
@@ -246,7 +246,7 @@ namespace ProcessMon
                 ProcessFilter processFilter = new ProcessFilter("");
                 processFilter.ControlFlag = 0;
                 processFilter.ProcessNameFilterMask = GlobalConfig.AssemblyName;
-                uint accessFlag = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+                uint accessFlag = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
                 processFilter.FileAccessRightList.Add("*", accessFlag);
                 processFilter.MonitorFileIOEventFilter = MonitorFileIOEvents.OnFileCreate;
                 processFilter.ControlFileIOEventFilter = ControlFileIOEvents.OnPreFileCreate;

@@ -30,6 +30,11 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox_AccessControl = new System.Windows.Forms.GroupBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.button_InfoTimeRestrictions = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox_TimeRestrictions = new System.Windows.Forms.TextBox();
+            this.button_AddTimeRestriction = new System.Windows.Forms.Button();
             this.button_InfoControlFlag = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.button_InfoControlEvents = new System.Windows.Forms.Button();
@@ -38,14 +43,10 @@
             this.button_RegisterControlIO = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.button_InfoProcessNameRights = new System.Windows.Forms.Button();
-            this.button_InfoProcessIdRights = new System.Windows.Forms.Button();
             this.button_InfoUserRights = new System.Windows.Forms.Button();
             this.textBox_UserRights = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.button_AddProcessRights = new System.Windows.Forms.Button();
-            this.textBox_ProcessIdRights = new System.Windows.Forms.TextBox();
             this.textBox_ProcessRights = new System.Windows.Forms.TextBox();
-            this.button_AddProcessIdRights = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
             this.button_AddUserRights = new System.Windows.Forms.Button();
             this.label23 = new System.Windows.Forms.Label();
@@ -87,6 +88,7 @@
             this.button_FileAccessFlags = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox_AccessControl.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -98,12 +100,13 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(609, 589);
+            this.groupBox1.Size = new System.Drawing.Size(609, 604);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             // 
             // groupBox_AccessControl
             // 
+            this.groupBox_AccessControl.Controls.Add(this.groupBox5);
             this.groupBox_AccessControl.Controls.Add(this.button_InfoControlFlag);
             this.groupBox_AccessControl.Controls.Add(this.groupBox4);
             this.groupBox_AccessControl.Controls.Add(this.groupBox3);
@@ -115,9 +118,58 @@
             this.groupBox_AccessControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox_AccessControl.Location = new System.Drawing.Point(3, 16);
             this.groupBox_AccessControl.Name = "groupBox_AccessControl";
-            this.groupBox_AccessControl.Size = new System.Drawing.Size(603, 570);
+            this.groupBox_AccessControl.Size = new System.Drawing.Size(603, 585);
             this.groupBox_AccessControl.TabIndex = 24;
             this.groupBox_AccessControl.TabStop = false;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.button_InfoTimeRestrictions);
+            this.groupBox5.Controls.Add(this.label3);
+            this.groupBox5.Controls.Add(this.textBox_TimeRestrictions);
+            this.groupBox5.Controls.Add(this.button_AddTimeRestriction);
+            this.groupBox5.Location = new System.Drawing.Point(9, 396);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(555, 46);
+            this.groupBox5.TabIndex = 128;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Add time restriction to filter rule";
+            // 
+            // button_InfoTimeRestrictions
+            // 
+            this.button_InfoTimeRestrictions.Image = global::EaseFilter.CommonObjects.Properties.Resources.about;
+            this.button_InfoTimeRestrictions.Location = new System.Drawing.Point(524, 16);
+            this.button_InfoTimeRestrictions.Name = "button_InfoTimeRestrictions";
+            this.button_InfoTimeRestrictions.Size = new System.Drawing.Size(28, 20);
+            this.button_InfoTimeRestrictions.TabIndex = 127;
+            this.button_InfoTimeRestrictions.UseVisualStyleBackColor = true;
+            this.button_InfoTimeRestrictions.Click += new System.EventHandler(this.button_InfoTimeRestrictions_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 19);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(112, 13);
+            this.label3.TabIndex = 72;
+            this.label3.Text = "Time restriction blocks";
+            // 
+            // textBox_TimeRestrictions
+            // 
+            this.textBox_TimeRestrictions.Location = new System.Drawing.Point(215, 17);
+            this.textBox_TimeRestrictions.Name = "textBox_TimeRestrictions";
+            this.textBox_TimeRestrictions.Size = new System.Drawing.Size(242, 20);
+            this.textBox_TimeRestrictions.TabIndex = 73;
+            // 
+            // button_AddTimeRestriction
+            // 
+            this.button_AddTimeRestriction.Location = new System.Drawing.Point(473, 16);
+            this.button_AddTimeRestriction.Name = "button_AddTimeRestriction";
+            this.button_AddTimeRestriction.Size = new System.Drawing.Size(41, 20);
+            this.button_AddTimeRestriction.TabIndex = 74;
+            this.button_AddTimeRestriction.Text = "Add";
+            this.button_AddTimeRestriction.UseVisualStyleBackColor = true;
+            this.button_AddTimeRestriction.Click += new System.EventHandler(this.button_AddTimeRestriction_Click);
             // 
             // button_InfoControlFlag
             // 
@@ -135,9 +187,9 @@
             this.groupBox4.Controls.Add(this.label17);
             this.groupBox4.Controls.Add(this.textBox_ControlIO);
             this.groupBox4.Controls.Add(this.button_RegisterControlIO);
-            this.groupBox4.Location = new System.Drawing.Point(6, 446);
+            this.groupBox4.Location = new System.Drawing.Point(9, 326);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(561, 71);
+            this.groupBox4.Size = new System.Drawing.Size(555, 59);
             this.groupBox4.TabIndex = 91;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Register File I/O Callback Notification Settings";
@@ -183,20 +235,16 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.button_InfoProcessNameRights);
-            this.groupBox3.Controls.Add(this.button_InfoProcessIdRights);
             this.groupBox3.Controls.Add(this.button_InfoUserRights);
             this.groupBox3.Controls.Add(this.textBox_UserRights);
-            this.groupBox3.Controls.Add(this.label1);
             this.groupBox3.Controls.Add(this.button_AddProcessRights);
-            this.groupBox3.Controls.Add(this.textBox_ProcessIdRights);
             this.groupBox3.Controls.Add(this.textBox_ProcessRights);
-            this.groupBox3.Controls.Add(this.button_AddProcessIdRights);
             this.groupBox3.Controls.Add(this.label22);
             this.groupBox3.Controls.Add(this.button_AddUserRights);
             this.groupBox3.Controls.Add(this.label23);
-            this.groupBox3.Location = new System.Drawing.Point(9, 326);
+            this.groupBox3.Location = new System.Drawing.Point(9, 445);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(555, 119);
+            this.groupBox3.Size = new System.Drawing.Size(555, 88);
             this.groupBox3.TabIndex = 90;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Add or Remove Access Rights to Processes or Users (create whiltelist or blacklist" +
@@ -212,20 +260,10 @@
             this.button_InfoProcessNameRights.UseVisualStyleBackColor = true;
             this.button_InfoProcessNameRights.Click += new System.EventHandler(this.button_InfoProcessNameRights_Click);
             // 
-            // button_InfoProcessIdRights
-            // 
-            this.button_InfoProcessIdRights.Image = global::EaseFilter.CommonObjects.Properties.Resources.about;
-            this.button_InfoProcessIdRights.Location = new System.Drawing.Point(521, 50);
-            this.button_InfoProcessIdRights.Name = "button_InfoProcessIdRights";
-            this.button_InfoProcessIdRights.Size = new System.Drawing.Size(28, 20);
-            this.button_InfoProcessIdRights.TabIndex = 125;
-            this.button_InfoProcessIdRights.UseVisualStyleBackColor = true;
-            this.button_InfoProcessIdRights.Click += new System.EventHandler(this.button_InfoProcessIdRights_Click);
-            // 
             // button_InfoUserRights
             // 
             this.button_InfoUserRights.Image = global::EaseFilter.CommonObjects.Properties.Resources.about;
-            this.button_InfoUserRights.Location = new System.Drawing.Point(521, 82);
+            this.button_InfoUserRights.Location = new System.Drawing.Point(521, 52);
             this.button_InfoUserRights.Name = "button_InfoUserRights";
             this.button_InfoUserRights.Size = new System.Drawing.Size(28, 20);
             this.button_InfoUserRights.TabIndex = 126;
@@ -234,19 +272,10 @@
             // 
             // textBox_UserRights
             // 
-            this.textBox_UserRights.Location = new System.Drawing.Point(212, 82);
+            this.textBox_UserRights.Location = new System.Drawing.Point(212, 52);
             this.textBox_UserRights.Name = "textBox_UserRights";
             this.textBox_UserRights.Size = new System.Drawing.Size(242, 20);
             this.textBox_UserRights.TabIndex = 80;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 52);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 13);
-            this.label1.TabIndex = 88;
-            this.label1.Text = "Processes Id rights";
             // 
             // button_AddProcessRights
             // 
@@ -258,29 +287,12 @@
             this.button_AddProcessRights.UseVisualStyleBackColor = true;
             this.button_AddProcessRights.Click += new System.EventHandler(this.button_AddProcessRights_Click);
             // 
-            // textBox_ProcessIdRights
-            // 
-            this.textBox_ProcessIdRights.Location = new System.Drawing.Point(212, 53);
-            this.textBox_ProcessIdRights.Name = "textBox_ProcessIdRights";
-            this.textBox_ProcessIdRights.Size = new System.Drawing.Size(242, 20);
-            this.textBox_ProcessIdRights.TabIndex = 87;
-            // 
             // textBox_ProcessRights
             // 
             this.textBox_ProcessRights.Location = new System.Drawing.Point(212, 22);
             this.textBox_ProcessRights.Name = "textBox_ProcessRights";
             this.textBox_ProcessRights.Size = new System.Drawing.Size(242, 20);
             this.textBox_ProcessRights.TabIndex = 77;
-            // 
-            // button_AddProcessIdRights
-            // 
-            this.button_AddProcessIdRights.Location = new System.Drawing.Point(473, 52);
-            this.button_AddProcessIdRights.Name = "button_AddProcessIdRights";
-            this.button_AddProcessIdRights.Size = new System.Drawing.Size(41, 20);
-            this.button_AddProcessIdRights.TabIndex = 89;
-            this.button_AddProcessIdRights.Text = "Add";
-            this.button_AddProcessIdRights.UseVisualStyleBackColor = true;
-            this.button_AddProcessIdRights.Click += new System.EventHandler(this.button_AddProcessIdRights_Click);
             // 
             // label22
             // 
@@ -293,7 +305,7 @@
             // 
             // button_AddUserRights
             // 
-            this.button_AddUserRights.Location = new System.Drawing.Point(473, 82);
+            this.button_AddUserRights.Location = new System.Drawing.Point(473, 52);
             this.button_AddUserRights.Name = "button_AddUserRights";
             this.button_AddUserRights.Size = new System.Drawing.Size(41, 20);
             this.button_AddUserRights.TabIndex = 82;
@@ -304,7 +316,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(12, 86);
+            this.label23.Location = new System.Drawing.Point(12, 56);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(62, 13);
             this.label23.TabIndex = 81;
@@ -313,8 +325,8 @@
             // button_SaveControlSettings
             // 
             this.button_SaveControlSettings.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button_SaveControlSettings.Location = new System.Drawing.Point(390, 527);
-            this.button_SaveControlSettings.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_SaveControlSettings.Location = new System.Drawing.Point(393, 541);
+            this.button_SaveControlSettings.Margin = new System.Windows.Forms.Padding(2);
             this.button_SaveControlSettings.Name = "button_SaveControlSettings";
             this.button_SaveControlSettings.Size = new System.Drawing.Size(130, 22);
             this.button_SaveControlSettings.TabIndex = 85;
@@ -710,15 +722,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(609, 589);
+            this.ClientSize = new System.Drawing.Size(609, 604);
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ControlFilterRuleSettigs";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Access Control Settings of The Filter Rule";
             this.groupBox1.ResumeLayout(false);
             this.groupBox_AccessControl.ResumeLayout(false);
             this.groupBox_AccessControl.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -762,9 +776,6 @@
         private System.Windows.Forms.CheckBox checkBox_AllowEncryptNewFile;
         private System.Windows.Forms.CheckBox checkBox_AllowCopyPaste;
         private System.Windows.Forms.CheckBox checkBox_AllowReadEncryptedFiles;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox_ProcessIdRights;
-        private System.Windows.Forms.Button button_AddProcessIdRights;
         private System.Windows.Forms.CheckBox checkBox_EnableReparseFile;
         private System.Windows.Forms.CheckBox checkBox_EnableHidenFile;
         private System.Windows.Forms.GroupBox groupBox4;
@@ -774,7 +785,6 @@
         private System.Windows.Forms.Button button_InfoControlFlag;
         private System.Windows.Forms.Button button_InfoControlEvents;
         private System.Windows.Forms.Button button_InfoProcessNameRights;
-        private System.Windows.Forms.Button button_InfoProcessIdRights;
         private System.Windows.Forms.Button button_InfoUserRights;
         private System.Windows.Forms.Button button_InfoEncryptKeyLenght;
         private System.Windows.Forms.Button button_InfoEncryptNewFile;
@@ -788,5 +798,10 @@
         private System.Windows.Forms.Button button_EncryptWriteBufferSize;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox_EncryptWriteBufferSize;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.Button button_InfoTimeRestrictions;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox_TimeRestrictions;
+        private System.Windows.Forms.Button button_AddTimeRestriction;
     }
 }

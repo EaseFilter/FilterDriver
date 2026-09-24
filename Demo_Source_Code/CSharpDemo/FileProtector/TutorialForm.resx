@@ -164,7 +164,7 @@ When you register a I/O request, you have fully control to that I/O request, a c
     <value>1.  Set all files to be read-only in folder c:\protectFolder, you can do the following setting:
 //Here is the example which you can’t modify the files, can't rename, can't delete, can’t write, can’t change security, 
 //can’t change file information (creation time, last write time, file attributes.) except the process cmd.exe from user testdomain\testuser
- uint accessFlag = (~ALLOW_FILE_DELETE) &amp;(~ALLOW_FILE_RENAME) &amp;(~ALLOW_WRITE_ACCESS)&amp; (~ALLOW_SET_INFORMATION)&amp; (~ALLOW_SET_SECURITY_ACCESS)&amp;  ALLOW_MAX_RIGHT_ACCESS;
+ uint accessFlag = (~ALLOW_FILE_DELETE) &amp;(~ALLOW_FILE_RENAME) &amp;(~ALLOW_WRITE_ACCESS)&amp; (~ALLOW_SET_INFORMATION)&amp; (~ALLOW_SET_SECURITY_ACCESS)&amp;  ALLOW_MAX_ACCESS_RIGHT;
 string filterMask = "c:\\protectFolder\\*";
 AddNewFilterRule(accessFlag,filterMask);
 AddExcludeProcessNameToFilterRule(filterMask,"cmd.exe");
@@ -176,13 +176,13 @@ AddExcludeUserNameToFilterRule(filterMask,"testdomain\\testuser");
 string  filterMask = "c:\\protectFolder\\excludeFolder\\*";
 AddNewFilterRule(accessFlag,filterMask);
  3.Hide all files with extension .txt from folder c:\test, when you browse the folder, all the .txt files will be hidden from the file list.
- uint accessFlag = (~ALLOW_WRITE_ACCESS)&amp; (~ALLOW_SET_INFORMATION)&amp; (~ALLOW_SET_SECURITY_ACCESS)&amp;  ALLOW_MAX_RIGHT_ACCESS;
+ uint accessFlag = (~ALLOW_WRITE_ACCESS)&amp; (~ALLOW_SET_INFORMATION)&amp; (~ALLOW_SET_SECURITY_ACCESS)&amp;  ALLOW_MAX_ACCESS_RIGHT;
 string  filterMask = "c:\\test\\*";
 AddNewFilterRule(accessFlag,filterMask);
 string  hideFileMask = L"*.txt";
 AddHiddenFileMaskToFilterRule(filterMask,hideFileMask);
 4.Set encryption rule to c:\\protectFolder, only process wordpad.exe can read the encrypted files.
- uint accessFlag = FILE_ENCRYPTION_RULE | ALLOW_MAX_RIGHT_ACCESS;
+ uint accessFlag = FILE_ENCRYPTION_RULE | ALLOW_MAX_ACCESS_RIGHT;
 string filterMask = "c:\\protectFolder\\*";
 AddNewFilterRule(accessFlag,filterMask);
 encryptionKey = 32 bytes encryption key byte array;

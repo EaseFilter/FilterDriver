@@ -102,7 +102,7 @@ namespace SecureSandbox
             try
             {
                 //To request a trial or production license key, please contact info@easefilter.com
-                //Requests from free email domains are not accepted        
+                //Requests from free email domains are not accepted.        
                 string licenseKey = GlobalConfig.LicenseKey;
 
                 string lastError = string.Empty;
@@ -225,9 +225,9 @@ namespace SecureSandbox
             selectedRegistryFilter.ProcessNameFilterMask = selectedFileFilter.IncludeFileFilterMask;
 
             //by default the sandbox folder doesn't allow being read/write by processes, if the processes want to access the sandbox, it needs to add process rights.
-            selectedFileFilter.AccessFlags = (FilterAPI.AccessFlag)(FilterAPI.ALLOW_MAX_RIGHT_ACCESS);
+            selectedFileFilter.AccessFlags = (FilterAPI.AccessFlag)(FilterAPI.ALLOW_MAX_ACCESS_RIGHT);
             //Allow the notepad.exe to read the file in sandbox with max right.
-            //selectedFileFilter.AddProcessNameAccessRight("notepad.exe" ,((uint)FilterAPI.ALLOW_MAX_RIGHT_ACCESS));
+            //selectedFileFilter.AddProcessNameAccessRight("notepad.exe" ,((uint)FilterAPI.ALLOW_MAX_ACCESS_RIGHT));
 
             //by default allow the binaries inside the sandbox to read/write the registry                
             selectedRegistryFilter.ControlFlag = FilterAPI.MAX_REGISTRY_ACCESS_FLAG;
@@ -236,11 +236,11 @@ namespace SecureSandbox
             //allow the executable binary to launch with below setting.
             //selectedProcessFilter.ControlFlag = (uint)FilterAPI.ProcessControlFlag.DENY_NEW_PROCESS_CREATION;
             //set the maximum access rights to the sandbox for all binaries inside the sandbox 
-            //selectedProcessFilter.FileAccessRightList.Add(textBox_SandboxFolder.Text.Trim() + "\\*", FilterAPI.ALLOW_MAX_RIGHT_ACCESS);
+            //selectedProcessFilter.FileAccessRightList.Add(textBox_SandboxFolder.Text.Trim() + "\\*", FilterAPI.ALLOW_MAX_ACCESS_RIGHT);
             ////allow the windows dll or exe to be read by the process, or it can't be loaded.
             //selectedProcessFilter.FileAccessRightList.Add("c:\\windows\\*", FilterAPI.ALLOW_FILE_READ_ACCESS);
             ////No access rights to all other folders by default.
-            //selectedProcessFilter.FileAccessRightList.Add("*",((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG));
+            //selectedProcessFilter.FileAccessRightList.Add("*",((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT));
                        
             GetSandboxSetting();
         }

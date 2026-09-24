@@ -9,8 +9,8 @@ namespace ZeroTrustDemo
     public partial class AccessRightForm : Form
     {
         public string userName = string.Empty;
-        public uint accessRight = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
-        public ProcessRightInfo processRightInfo = new ProcessRightInfo(FilterAPI.ALLOW_MAX_RIGHT_ACCESS, "*", "","");
+        public uint accessRight = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
+        public ProcessRightInfo processRightInfo = new ProcessRightInfo(FilterAPI.ALLOW_MAX_ACCESS_RIGHT, "*", "","");
 
         public AccessRightForm(ProcessRightInfo _processRightInfo)
         {
@@ -110,7 +110,7 @@ namespace ZeroTrustDemo
                 else
                 {
                     //if the accessFlag is 0, it is exclude filter rule,this is not what we want, so we need to include this flag.
-                    textBox_FileAccessFlags.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG).ToString();
+                    textBox_FileAccessFlags.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT).ToString();
                 }
 
                 SetCheckBoxValue();

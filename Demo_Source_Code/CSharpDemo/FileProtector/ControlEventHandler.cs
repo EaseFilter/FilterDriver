@@ -735,7 +735,7 @@ namespace FileProtector
 
             //    //you can setup the new filter rule for this USB drive here, for example you block this USB as below:
             //    FileFilter usbFilter = new FileFilter(e.VolumeDosName + "*");
-            //    usbFilter.AccessFlags = FilterAPI.AccessFlag.LEAST_ACCESS_FLAG;
+            //    usbFilter.AccessFlags = FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT;
 
             //    if (!FilterAPI.AddFileFilterRule((uint)usbFilter.AccessFlags, usbFilter.IncludeFileFilterMask, usbFilter.IsResident, usbFilter.FilterId))
             //    {
@@ -754,7 +754,7 @@ namespace FileProtector
         }
 
         /// <summary>
-        /// Fires this event when a volume was detached from the filter driver.
+        /// Fires this event when a pre file i/o operation was blocked by filter driver.
         /// </summary>
         public void NotifiyFileIOWasBlocked(object sender, DeniedFileIOEventArgs e)
         {
@@ -763,7 +763,7 @@ namespace FileProtector
         }
 
         /// <summary>
-        /// Fires this event when a volume was detached from the filter driver.
+        /// Fires this event when a process termination was blocked by filter driver.
         /// </summary>
         public void NotifiyProcessTerminatedWasBlocked(object sender, DeniedProcessTerminatedEventArgs e)
         {
@@ -773,7 +773,7 @@ namespace FileProtector
 
 
         /// <summary>
-        /// Fires this event when a volume was detached from the filter driver.
+        /// Fires this event when a USB read was blocked by the filter driver.
         /// </summary>
         public void NotifyUSBReadWasBlocked(object sender, DeniedUSBReadEventArgs e)
         {
@@ -783,7 +783,7 @@ namespace FileProtector
 
 
         /// <summary>
-        /// Fires this event when a volume was detached from the filter driver.
+        /// Fires this event when a USB write was blocked by the filter driver.
         /// </summary>
         public void NotifyUSBWriteWasBlocked(object sender, DeniedUSBWriteEventArgs e)
         {

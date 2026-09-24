@@ -140,7 +140,7 @@ namespace EaseFilter.FilterControl
                         BinaryWriter bw = new BinaryWriter(ms);
                         byte[] iv = new byte[16];
                         uint ivLength = (uint)iv.Length;
-                        uint accessFlag = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+                        uint accessFlag = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
                         bw.Write(accessFlag);
                         bw.Write(ivLength);
                         bw.Write(iv);

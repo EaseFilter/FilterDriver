@@ -41,12 +41,12 @@ namespace EaseFilter.CommonObjects
             textBox_ControlIO.Text = ((ulong)fileFilter.ControlFileIOEventFilter).ToString();
             checkBox_EnableProtectionInBootTime.Checked = fileFilter.IsResident;
             textBox_ProcessRights.Text = fileFilter.ProcessNameAccessRightString;
-            textBox_ProcessIdRights.Text = fileFilter.ProcessIdAccessRightString;
             textBox_UserRights.Text = fileFilter.UserAccessRightString;
             textBox_PassPhrase.Text = fileFilter.EncryptionPassPhrase;
             textBox_HiddenFilterMask.Text = fileFilter.HiddenFileFilterMaskString;
             textBox_ReparseFileFilterMask.Text = fileFilter.ReparseFileFilterMask;
             textBox_EncryptWriteBufferSize.Text = fileFilter.EncryptWriteBufferSize.ToString();
+            textBox_TimeRestrictions.Text = fileFilter.TimeRestrictionBlockListString;
 
             SetCheckBoxValue();
 
@@ -244,7 +244,7 @@ namespace EaseFilter.CommonObjects
             fileFilter.IsResident = checkBox_EnableProtectionInBootTime.Checked;
             fileFilter.UserAccessRightString = textBox_UserRights.Text;
             fileFilter.ProcessNameAccessRightString = textBox_ProcessRights.Text;
-            fileFilter.ProcessIdAccessRightString = textBox_ProcessIdRights.Text;
+            fileFilter.TimeRestrictionBlockListString = textBox_TimeRestrictions.Text;
 
         }
 
@@ -262,7 +262,7 @@ namespace EaseFilter.CommonObjects
                 else
                 {
                     //if the accessFlag is 0, it is exclude filter rule,this is not what we want, so we need to include this flag.
-                    textBox_FileAccessFlags.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG).ToString();
+                    textBox_FileAccessFlags.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT).ToString();
                 }
 
                 SetCheckBoxValue();
@@ -289,17 +289,6 @@ namespace EaseFilter.CommonObjects
             }
         }
 
-        private void button_AddProcessIdRights_Click(object sender, EventArgs e)
-        {
-            Form_AccessRights accessRightsForm = new Form_AccessRights(Form_AccessRights.AccessRightType.ProccessIdRight, textBox_ProcessIdRights.Text);
-
-            if (accessRightsForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                textBox_ProcessIdRights.Text = accessRightsForm.accessRightText;
-            }
-
-        }   
-
 
         private void button_AddUserRights_Click(object sender, EventArgs e)
         {
@@ -308,6 +297,16 @@ namespace EaseFilter.CommonObjects
             if (accessRightsForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 textBox_UserRights.Text = accessRightsForm.accessRightText;
+            }
+        }
+
+        private void button_AddTimeRestriction_Click(object sender, EventArgs e)
+        {
+            Form_AccessRights accessRightsForm = new Form_AccessRights(Form_AccessRights.AccessRightType.TimeRestrict, textBox_TimeRestrictions.Text);
+
+            if (accessRightsForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                textBox_TimeRestrictions.Text = accessRightsForm.accessRightText;
             }
         }
 
@@ -611,7 +610,10 @@ namespace EaseFilter.CommonObjects
             MessageBox.Show("If the encrypt write buffer size is greater than 0, then the small buffer encryption write will be combined together to a bigger buffer, and write it to the disk.");
         }
 
-     
-             
+        private void button_InfoTimeRestrictions_Click(object sender, EventArgs e)
+        {
+            string info = "Appends a time-based restriction to the filter rule. When an operation occurs, if the system time falls within this restricted time window.The specified access flag will override the rule's default access rights (e.g., you can deny file access at night).";
+            MessageBox.Show(info);
+        }
     }
 }

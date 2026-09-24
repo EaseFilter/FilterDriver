@@ -53,11 +53,11 @@ namespace FileProtectorConsole
                 //fileProtectorFilter.EnableWriteToFile = false;
 
                 //authorize process with full access right
-                //fileProtectorFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_RIGHT_ACCESS, "notepad.exe", "", "");
+                //fileProtectorFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_ACCESS_RIGHT, "notepad.exe", "", "");
 
 
                 //set the access rights for the specific user, here is to remove the delete and rename rights.
-                //uint accessRights = FilterAPI.ALLOW_MAX_RIGHT_ACCESS & (uint)(~(FilterAPI.AccessFlag.ALLOW_FILE_DELETE | FilterAPI.AccessFlag.ALLOW_FILE_RENAME));
+                //uint accessRights = FilterAPI.ALLOW_MAX_ACCESS_RIGHT & (uint)(~(FilterAPI.AccessFlag.ALLOW_FILE_DELETE | FilterAPI.AccessFlag.ALLOW_FILE_RENAME));
                 //fileProtectorFilter.UserAccessRightList.Add("domainname or computer\\username", accessRights);
 
                 //you can enable/disalbe more access right by setting the properties of the fileProtectorFilter.

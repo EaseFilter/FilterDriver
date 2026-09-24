@@ -184,7 +184,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			WCHAR* fileFilterMask = L"c:\\test\\*";
 			ULONGLONG ioCallbackClass = allPostIO;
-			ULONG accessFlag = ALLOW_MAX_RIGHT_ACCESS;
+			ULONG accessFlag = ALLOW_MAX_ACCESS_RIGHT;
 
 			if (argc >= 3)
 			{
@@ -244,7 +244,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			WCHAR* fileFilterMask = L"c:\\test\\*";
 			ULONGLONG ioCallbackClass = PRE_CREATE| PRE_RENAME_FILE| PRE_DELETE_FILE;
-			ULONG accessFlag = ALLOW_MAX_RIGHT_ACCESS;		
+			ULONG accessFlag = ALLOW_MAX_ACCESS_RIGHT;		
 
 			if (argc >= 3)
 			{
@@ -266,7 +266,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			fileFilterRule.AccessFlag = accessFlag;
 
 			//block the new file read/rename/delete/write in the filter driver
-			//fileFilterRule.AccessFlag = ALLOW_MAX_RIGHT_ACCESS & (~(ALLOW_READ_ACCESS |ALLOW_FILE_RENAME|ALLOW_FILE_DELETE|ALLOW_WRITE_ACCESS));
+			//fileFilterRule.AccessFlag = ALLOW_MAX_ACCESS_RIGHT & (~(ALLOW_READ_ACCESS |ALLOW_FILE_RENAME|ALLOW_FILE_DELETE|ALLOW_WRITE_ACCESS));
 
 			fileFilterRule.BooleanConfig = ENABLE_MONITOR_EVENT_BUFFER;
 			fileFilterRule.FileChangeEventFilter = FILE_WAS_CREATED|FILE_WAS_WRITTEN|FILE_WAS_RENAMED|FILE_WAS_DELETED|FILE_WAS_READ;
@@ -295,10 +295,17 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			//disable the file being renamed, deleted and written access rights.
 			ULONG processAccessRights = accessFlag & (~(ALLOW_FILE_RENAME|ALLOW_FILE_DELETE|ALLOW_WRITE_ACCESS));
+			
 			//set this new access rights to process cmd, cmd can't rename,delete or write to the file.
 			//this feature requires the process filter driver feature, it need to enable the process filter driver.
 			filterType |= FILE_SYSTEM_PROCESS;
-			fileFilterRule.AddAccessRightsToProcessName(L"cmd.exe", processAccessRights);
+			/*Add application certificate name if verification needed, add image256 hash if verification needed*/
+			fileFilterRule.AddTrustedProcessRight(L"cmd.exe", processAccessRights, NULL, NULL);
+
+			// add time restriction with least access right for the folder between time 0am to 9am and 5pm to 24pm:
+			// set the time with elapsed minutes since midnight
+			//fileFilterRule.AddTimeRestriction(LEAST_ACCESS_RIGHT, 0, 540);     // 0:00 to 9:00 AM (9 * 60 = 540)
+			//fileFilterRule.AddTimeRestriction(LEAST_ACCESS_RIGHT, 1020, 1440); // 5:00 PM to Midnight (17 * 60 = 1020)
 
 			filterControl->AddFileFilter(fileFilterRule);
 
@@ -356,7 +363,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			//by default all users/processes will get the decrypted data
 			//it meant by default all users/processes are in whitelist
-			ULONG accessFlag = (ALLOW_MAX_RIGHT_ACCESS | ENABLE_FILE_ENCRYPTION_RULE);
+			ULONG accessFlag = (ALLOW_MAX_ACCESS_RIGHT | ENABLE_FILE_ENCRYPTION_RULE);
 
 			filterType = FILE_SYSTEM_ENCRYPTION | FILE_SYSTEM_CONTROL | FILE_SYSTEM_PROCESS;
 
@@ -405,11 +412,11 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			//by default all users/processes will get the raw encrypted data
 			//it meant by default all users/processes are in blacklist
-			ULONG accessFlag = (ALLOW_MAX_RIGHT_ACCESS | ENABLE_FILE_ENCRYPTION_RULE) & (~ALLOW_READ_ENCRYPTED_FILES);
+			ULONG accessFlag = (ALLOW_MAX_ACCESS_RIGHT | ENABLE_FILE_ENCRYPTION_RULE) & (~ALLOW_READ_ENCRYPTED_FILES);
 
 			//by default all users/processes will get the decrypted data
 			//it meant by default all users/processes are in whitelist
-			//ULONG accessFlag = (ALLOW_MAX_RIGHT_ACCESS | ENABLE_FILE_ENCRYPTION_RULE);
+			//ULONG accessFlag = (ALLOW_MAX_ACCESS_RIGHT | ENABLE_FILE_ENCRYPTION_RULE);
 
 			filterType = FILE_SYSTEM_ENCRYPTION | FILE_SYSTEM_CONTROL | FILE_SYSTEM_PROCESS;
 
@@ -433,17 +440,17 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 
 			//set the blacklist of the process, if the default filter rule is whitelist to all users/processes.
-			//ULONG rawEncryptionRights = ALLOW_MAX_RIGHT_ACCESS & (~ALLOW_READ_ENCRYPTED_FILES);
-			//fileFilterRule.AddAccessRightsToProcessName(L"explorer.exe", rawEncryptionRights,NULL,NULL);
+			//ULONG rawEncryptionRights = ALLOW_MAX_ACCESS_RIGHT & (~ALLOW_READ_ENCRYPTED_FILES);
+			//fileFilterRule.AddTrustedProcessRight(L"explorer.exe", rawEncryptionRights,NULL,NULL);
 
 			//set the whitelist for the user "AzureAD\\Alice"
-			//fileFilterRule.AddAccessRightsToUserName(L"AzureAD\\Alice", ALLOW_MAX_RIGHT_ACCESS);
+			//fileFilterRule.AddProcessRight(L"AzureAD\\Alice", ALLOW_MAX_ACCESS_RIGHT);
 
 			//set the whitelist for the process "wordpad.exe"
-			fileFilterRule.AddAccessRightsToProcessName(L"wordpad.exe", ALLOW_MAX_RIGHT_ACCESS, NULL, NULL);
+			fileFilterRule.AddTrustedProcessRight(L"wordpad.exe", ALLOW_MAX_ACCESS_RIGHT, NULL, NULL);
 
 			//set the whitelist for the process "notepad.exe"
-			fileFilterRule.AddAccessRightsToProcessName(L"notepad.exe", ALLOW_MAX_RIGHT_ACCESS, NULL, NULL);
+			fileFilterRule.AddTrustedProcessRight(L"notepad.exe", ALLOW_MAX_ACCESS_RIGHT, NULL, NULL);
 
 			filterControl->AddFileFilter(fileFilterRule);
 
@@ -485,7 +492,7 @@ int _tmain(int argc, _TCHAR* argv[])
 				fileFilterMask = argv[2];
 			}
 
-			ULONG accessFlag = (ALLOW_MAX_RIGHT_ACCESS | ENABLE_REPARSE_FILE_OPEN);
+			ULONG accessFlag = (ALLOW_MAX_ACCESS_RIGHT | ENABLE_REPARSE_FILE_OPEN);
 			filterType = FILE_SYSTEM_REPARSE;
 
 			FileFilterRule fileFilterRule(fileFilterMask);
@@ -545,7 +552,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			filterControl->AddProcessFilter(processFilterRule);
 
 			//block the process to write,rename or delete to folder c:\test
-			ULONG accessFlag = ALLOW_MAX_RIGHT_ACCESS & ~(ALLOW_OPEN_WITH_CREATE_OR_OVERWRITE_ACCESS | ALLOW_WRITE_ACCESS | ALLOW_FILE_RENAME | ALLOW_FILE_DELETE);
+			ULONG accessFlag = ALLOW_MAX_ACCESS_RIGHT & ~(ALLOW_OPEN_WITH_CREATE_OR_OVERWRITE_ACCESS | ALLOW_WRITE_ACCESS | ALLOW_FILE_RENAME | ALLOW_FILE_DELETE);
 			processFilterRule.AddFileAccessRightsToProcess(L"c:\\test\\*", accessFlag);
 
 			if (!filterControl->StartFilterService(filterType, threadCount, connectionTimeout, registerKey))
@@ -660,7 +667,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			CreateTestFiles(stubFolder);
 
-			ULONG accessFlag = ALLOW_MAX_RIGHT_ACCESS;
+			ULONG accessFlag = ALLOW_MAX_ACCESS_RIGHT;
 
 			wcscat_s(testStubFileFolder, MAX_PATH, L"\\*");
 			stubFolder = testStubFileFolder;

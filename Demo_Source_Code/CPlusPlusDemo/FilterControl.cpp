@@ -300,6 +300,17 @@ FilterControl::SendFileFilterRuleToFilter(FileFilterRule* fileFilter)
 
 		++pidRights;
     }
+
+    //set time restriction if the list is not empty.
+    for (std::vector<TIME_RESTRICTION_INFO>::iterator timeRestrictInfo = fileFilter->TimeRestrictionList.begin();
+        timeRestrictInfo != fileFilter->TimeRestrictionList.end(); ++timeRestrictInfo)
+    {
+        if (!AddTimeRestrictionToFilterRule(&fileFilter->FileFilterMask[0], timeRestrictInfo->AccessFlag, timeRestrictInfo->StartTime, timeRestrictInfo->EndTime))
+        {
+            PrintLastErrorMessage(L"AddTimeRestrictionToFilterRule failed.");
+            return false;
+        }
+    }
         
     //Hide the files which match the hidden file filter masks when the user browse the managed directory.
     if (fileFilter->IsHiddenFileEnabled())

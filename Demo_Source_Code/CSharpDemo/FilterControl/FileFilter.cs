@@ -86,7 +86,7 @@ namespace EaseFilter.FilterControl
         /// <summary>
         /// the boolean config setting of the filter, reference FilterAPI.BooleanConfig
         /// </summary>
-        uint booleanConfig = 0;
+        uint booleanConfig =(uint)FilterAPI.BooleanConfig.ENABLE_MONITOR_EVENT_BUFFER;
 
         public FileFilter(string fileFilterMask)
         {
@@ -492,9 +492,9 @@ namespace EaseFilter.FilterControl
         }
 
         /// <summary>
-        ///enable this feature when accessFlag "ALLOW_SAVE_AS" or "ALLOW_COPY_PROTECTED_FILES_OUT" was disabled.
-        ///by default we don't enable this feature, because of the drawback of these two flags were disabled 
-        ///which will block all new file creation of the process which was read the protected files.
+        /// To block Save As, you need to enable boolean flag ENABLE_BLOCK_SAVE_AS_FLAG and clear the ALLOW_ALL_SAVE_AS access flag. 
+        /// This feature is disabled by default because Windows filter drivers cannot distinguish Save As from normal file creation.
+        /// When enabled, any process that reads a protected file is blocked from creating new files.
         /// </summary>
         public bool EnableBlockSaveAs
         {

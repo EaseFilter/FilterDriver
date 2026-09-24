@@ -247,7 +247,18 @@ namespace EaseFilter.CommonObjects
             set { base["processIdRights"] = value; }
         }
 
-    
+        /// <summary>
+        /// get or set the time restriction list in string
+        /// the string format: accessFlag|startTime|endTime;accessFlag2|startTime2|endTime2
+        /// </summary>
+        [ConfigurationProperty("timeRestrictions", IsRequired = false)]
+        public string TimeRestrictions
+        {
+            get { return (string)base["timeRestrictions"]; }
+            set { base["timeRestrictions"] = value; }
+        }
+
+
         [ConfigurationProperty("encryptionPassPhrase", IsRequired = false)]
         public string EncryptionPassPhrase
         {
@@ -428,6 +439,7 @@ namespace EaseFilter.CommonObjects
             IncludeProcessIds = fileFilter.IncludeProcessIdString;
             ExcludeProcessIds = fileFilter.ExcludeProcessIdString;
             ProcessIdRights = fileFilter.ProcessIdAccessRightString;
+            TimeRestrictions = fileFilter.TimeRestrictionBlockListString;
 
         }
 
@@ -462,6 +474,7 @@ namespace EaseFilter.CommonObjects
                 fileFilter.ProcessIdAccessRightString = ProcessIdRights;
                 fileFilter.ProcessNameAccessRightString = ProcessNameRights;
                 fileFilter.UserAccessRightString = UserRights;
+                fileFilter.TimeRestrictionBlockListString = TimeRestrictions;
 
                 if ((AccessFlag & (uint)FilterAPI.AccessFlag.ENABLE_HIDE_FILES_IN_DIRECTORY_BROWSING) > 0)
                 {

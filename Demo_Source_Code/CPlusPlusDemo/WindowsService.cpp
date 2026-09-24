@@ -209,7 +209,7 @@ DWORD WINAPI ServiceWorkerThread (LPVOID lpParam)
 
 			WCHAR* fileFilterMask = L"c:\\test\\*";
 			ULONG ioCallbackClass = allPostIO;
-			ULONG accessFlag = ALLOW_MAX_RIGHT_ACCESS;		
+			ULONG accessFlag = ALLOW_MAX_ACCESS_RIGHT;		
 
 			FileFilterRule fileFilterRule(fileFilterMask);
 			fileFilterRule.AccessFlag = accessFlag;

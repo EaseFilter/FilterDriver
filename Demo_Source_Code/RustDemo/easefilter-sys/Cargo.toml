@@ -1,0 +1,11 @@
+[package]
+name = "easefilter-sys"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = []
+bindgen = ["dep:bindgen"]
+
+[build-dependencies]
+bindgen = { version = "0.72.1", optional = true }

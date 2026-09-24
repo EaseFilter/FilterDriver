@@ -202,7 +202,7 @@ namespace EaseFilter.CommonObjects
 
         private void button_AddFilter_Click(object sender, EventArgs e)
         {
-            string defaultAccessFlags = ((uint)FilterAPI.ALLOW_MAX_RIGHT_ACCESS ).ToString();
+            string defaultAccessFlags = ((uint)FilterAPI.ALLOW_MAX_ACCESS_RIGHT ).ToString();
            
             FilterRuleForm filterRuleForm = new FilterRuleForm();
             filterRuleForm.StartPosition = FormStartPosition.CenterParent;

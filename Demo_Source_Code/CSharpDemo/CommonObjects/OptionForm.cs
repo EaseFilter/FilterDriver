@@ -380,7 +380,7 @@ namespace EaseFilter.CommonObjects
 
                         foreach (FilterAPI.AccessFlag accessFlag in Enum.GetValues(typeof(FilterAPI.AccessFlag)))
                         {
-                            if (accessFlag <= FilterAPI.AccessFlag.EXCLUDE_FILE_ACCESS || accessFlag == FilterAPI.AccessFlag.LEAST_ACCESS_FLAG)
+                            if (accessFlag <= FilterAPI.AccessFlag.EXCLUDE_FILE_ACCESS || accessFlag == FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT)
                             {
                                 //this is special usage for the filter 
                                 continue;
@@ -411,7 +411,7 @@ namespace EaseFilter.CommonObjects
 
                         foreach (FilterAPI.AccessFlag accessFlag in Enum.GetValues(typeof(FilterAPI.AccessFlag)))
                         {
-                            if (accessFlag < FilterAPI.AccessFlag.ALLOW_OPEN_WITH_ACCESS_SYSTEM_SECURITY || accessFlag == FilterAPI.AccessFlag.LEAST_ACCESS_FLAG)
+                            if (accessFlag < FilterAPI.AccessFlag.ALLOW_OPEN_WITH_ACCESS_SYSTEM_SECURITY || accessFlag == FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT)
                             {
                                 //this is special usage for the filter 
                                 continue;

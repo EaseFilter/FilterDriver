@@ -103,7 +103,7 @@ namespace  SecureShare
             string authorizedIps = string.Empty;
             string fileName = textBox_FileName.Text.Trim();
             string targetFileName = textBox_TargetName.Text;
-            uint accessFlags = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+            uint accessFlags = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
 
             try
             {
@@ -145,7 +145,7 @@ namespace  SecureShare
                     return false;
                 }
 
-                string tagDataStr = GlobalConfig.AccountName + ";" + Environment.MachineName + ";" + encryptionIVStr;
+                string tagDataStr = GlobalConfig.AccountName + ";" + FilterAPI.GetComputerId().ToString() + ";" + encryptionIVStr;
                 byte[] tagData = ASCIIEncoding.ASCII.GetBytes(tagDataStr);
 
                 if (fileName.Equals(targetFileName, StringComparison.CurrentCulture))
@@ -172,7 +172,7 @@ namespace  SecureShare
                 else
                 {
                     //set this flag to the encrypted file, require to get permission from user mode when the share encrypted file was opened 
-                    if (!FilterAPI.SetHeaderFlags(targetFileName, (uint)AESFlags.Flags_Request_IV_And_Key_From_User,FilterAPI.ALLOW_MAX_RIGHT_ACCESS))
+                    if (!FilterAPI.SetHeaderFlags(targetFileName, (uint)AESFlags.Flags_Request_IV_And_Key_From_User,FilterAPI.ALLOW_MAX_ACCESS_RIGHT))
                     {
                         MessageBoxHelper.PrepToCenterMessageBoxOnForm(this);
                         MessageBox.Show("SetHeaderFlags for file " + targetFileName + " failed with error:" + FilterAPI.GetLastErrorMessage(), "SetHeaderFlags", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -210,7 +210,7 @@ namespace  SecureShare
             string authorizedIps = string.Empty;
             string fileName = textBox_FileName.Text.Trim();
             string targetFileName = textBox_TargetName.Text;
-            uint accessFlags = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+            uint accessFlags = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
             string encryptionIVStr = selectDRMData.EncryptionIV;
             string encryptionKeyStr = selectDRMData.EncryptionKey;            
 

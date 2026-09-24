@@ -71,7 +71,7 @@ namespace FileMonitor
         private  string unitTestCallbackFile = Path.Combine(binaryPath, "EaseFilterUnitTest") + "\\callbackFolder\\unitTestFile.txt";
 
         //To request a trial or production license key, please contact info@easefilter.com
-        //Requests from free email domains are not accepted
+        //Requests from free email domains are not accepted.
         public string licenseKey = "******************************************";
 
 
@@ -200,7 +200,7 @@ namespace FileMonitor
 
 
             FileFilter monitorFilterRule = new FileFilter(unitTestMonitorTestFolder + "\\*");
-            monitorFilterRule.AccessFlags = (FilterAPI.AccessFlag)FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+            monitorFilterRule.AccessFlags = (FilterAPI.AccessFlag)FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
             monitorFilterRule.FileChangeEventFilter = (FilterAPI.FileChangedEvents.NotifyFileWasCreated | FilterAPI.FileChangedEvents.NotifyFileWasDeleted | FilterAPI.FileChangedEvents.NotifyFileInfoWasChanged
                 | FilterAPI.FileChangedEvents.NotifyFileWasRenamed | FilterAPI.FileChangedEvents.NotifyFileWasWritten |FilterAPI.FileChangedEvents.NotifyFileSecurityWasChanged|FilterAPI.FileChangedEvents.NotifyFileWasRead);
 

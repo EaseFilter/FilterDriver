@@ -50,6 +50,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommonObjects\CommonObjects.csproj">
+      <Project>{34cb783e-dda2-4ce3-80bc-37b25aa33e5f}</Project>
+      <Name>CommonObjects</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FilterControl\FilterControl.csproj">
       <Project>{21540012-a296-45ce-8d35-3ea5a07b32a6}</Project>
       <Name>FilterControl</Name>

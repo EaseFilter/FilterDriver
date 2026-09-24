@@ -243,6 +243,26 @@ namespace EaseFilter.FilterControl
         }
     }
 
+    /// <summary>
+    /// Appends a time-based restriction to the filter rule.
+    /// When an operation occurs, if the system time falls within this restricted time window,
+    /// the specified access flag will override the rule's default access rights. 
+    /// You can call this method multiple times to configure distinct time windows for a single rule.
+    /// </summary>
+    public class TimeRestrictionBlock
+    {
+        public uint accessFlag;
+        public long startTime;
+        public long endTime;
+        
+        public TimeRestrictionBlock(uint accessFlag, long startTime, long endTime)
+        {
+            this.accessFlag = accessFlag;
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+    }
+
     partial class FileFilter
     {
         /// <summary>
@@ -254,7 +274,7 @@ namespace EaseFilter.FilterControl
         /// the control flag of the filter
         /// reference FilterAPI.AccessFlag enumeration
         /// </summary>
-        uint accessFlags = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+        uint accessFlags = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
 
         /// <summary>
         /// the access right of the process 
@@ -266,6 +286,11 @@ namespace EaseFilter.FilterControl
         /// the access right of the users
         /// </summary>
         Dictionary<string, uint> userNameAccessRightList = new Dictionary<string, uint>();
+
+        /// <summary>
+        /// Appends a time-based restriction to the filter rule.
+        /// </summary>
+        List<TimeRestrictionBlock> timeRestrictionBlocks = new List<TimeRestrictionBlock>();
 
         #region control filter property
 
@@ -332,10 +357,21 @@ namespace EaseFilter.FilterControl
         /// </summary>
         /// <param name="processNameFilterMask"></param>
         /// <param name="accessFlags"></param>
-        public void AddProcessNameAccessRight(string processNameFilterMask, uint accessFlags)
+        public void AddProcessRight(string processNameFilterMask, uint accessFlags)
         {
             ProcessRightInfo processRightInfo =  new ProcessRightInfo(accessFlags, processNameFilterMask, "", "");
             processNameRightList.Add(processNameFilterMask, processRightInfo);
+        }
+      
+
+        /// <summary>
+        /// Add the access rights to the process which was signed or has the same sha256 hash
+        /// </summary>
+        /// <param name="accessFlags">the access rights for the process</param>
+        /// <param name="processNameFilterMask">the process name filter mask</param>
+        public void AddTrustedProcessRight(uint accessFlags, string processNameFilterMask)
+        {
+            processNameRightList.Add(processNameFilterMask, new ProcessRightInfo(accessFlags, processNameFilterMask, "",""));
         }
 
         /// <summary>
@@ -347,7 +383,8 @@ namespace EaseFilter.FilterControl
         /// <param name="ImageSha256Hash">the sha256 hash of the process, it is optional</param>
         public void AddTrustedProcessRight(uint accessFlags, string processNameFilterMask, string certificateName, string imageSha256Hash)
         {
-            processNameRightList.Add(processNameFilterMask, new ProcessRightInfo(accessFlags, processNameFilterMask, certificateName, imageSha256Hash));
+            ProcessRightInfo processRightInfo = new ProcessRightInfo(accessFlags, processNameFilterMask, certificateName, imageSha256Hash);
+            processNameRightList.Add(processNameFilterMask, processRightInfo);
         }
 
         /// <summary>
@@ -460,6 +497,16 @@ namespace EaseFilter.FilterControl
         }
 
         /// <summary>
+        /// Add the access right to the user with the user name filter mask.
+        /// </summary>
+        /// <param name="userNameFilterMask"></param>
+        /// <param name="accessFlags"></param>
+        public void AddUserRight(string userNameFilterMask, uint accessFlags)
+        {
+            userNameAccessRightList.Add(userNameFilterMask,accessFlags);
+        }
+
+        /// <summary>
         /// set the access rights of the files to the users in the list
         /// </summary>
         public Dictionary<string, uint> UserAccessRightList
@@ -467,6 +514,7 @@ namespace EaseFilter.FilterControl
             get { return userNameAccessRightList; }
             set { userNameAccessRightList = value; }
         }
+      
 
         /// <summary>
         /// get or set the access rights of the files to the user list in string
@@ -503,6 +551,67 @@ namespace EaseFilter.FilterControl
                 }
             }
         }
+
+        /// <summary>
+        /// Appends a time-based restriction to the filter rule.
+        /// When an operation occurs, if the system time falls within this restricted time window,
+        /// the specified access flag will override the rule's default access rights. 
+        /// You can call this method multiple times to configure distinct time windows for a single rule.
+        /// </summary>
+        /// <param name="accessFlag">The access flag to apply during this time window.</param>
+        /// <param name="startTime">The start time of the time block (treated as daily elapsed minutes if <= 1440, otherwise treated as FILETIME).</param>
+        /// <param name="endTime">The end time of the time block (treated as daily elapsed minutes if <= 1440, otherwise treated as FILETIME).</param>
+        public void AddTimeRestriction(uint accessFlag, long startTime, long endTime)
+        {
+            timeRestrictionBlocks.Add(new TimeRestrictionBlock(accessFlag, startTime, endTime));
+        }
+
+        /// <summary>
+        /// Get or set the time restriction block list
+        /// </summary>
+        public List<TimeRestrictionBlock> TimeRestrictionBlockList
+        {
+            get { return timeRestrictionBlocks; }
+            set { timeRestrictionBlocks = value; }
+        }
+
+        /// <summary>
+        /// get or set the time restriction list in string
+        /// the string format: accessFlag|startTime|endTime;accessFlag2|startTime2|endTime2
+        /// </summary>
+        public string TimeRestrictionBlockListString
+        {
+            get
+            {
+                string timeRestrictionBlockListString = string.Empty;
+                foreach (TimeRestrictionBlock entry in TimeRestrictionBlockList)
+                {
+                    timeRestrictionBlockListString += entry.accessFlag + "|" + entry.startTime + "|" + entry.endTime + ";";
+                }
+
+                return timeRestrictionBlockListString;
+            }
+            set
+            {
+                TimeRestrictionBlockList.Clear();
+                string[] timeRestrictBlocks = value.Split(new char[] { ';' });
+                if (timeRestrictBlocks.Length > 0)
+                {
+                    foreach (string timeRestrictBlock in timeRestrictBlocks)
+                    {
+                        string[] entries = timeRestrictBlock.Split(new char[] { '|' });
+                        if (entries.Length > 2)
+                        {
+                            uint accessFlag = uint.Parse(entries[0]);
+                            long startTime = long.Parse(entries[1]);
+                            long endTime = long.Parse(entries[2]);
+                            TimeRestrictionBlockList.Add(new TimeRestrictionBlock(accessFlag, startTime, endTime));
+                        }
+                    }
+                }
+            }
+        }
+        
 
         /// <summary>
         /// Get or set the hidden file filter mask list,
@@ -782,10 +891,11 @@ namespace EaseFilter.FilterControl
         }
 
         /// <summary>
-        /// If the flag is turned off, the application will be blocked from creating a new file after opening a protected file. 
-        /// This feature is enabled only when the filter rule’s boolean configuration ENABLE_BLOCK_SAVE_AS_FLAG is enabled.
+        /// To block Save As, you need to enable boolean flag ENABLE_BLOCK_SAVE_AS_FLAG and clear the ALLOW_ALL_SAVE_AS access flag. 
+        /// This feature is disabled by default because Windows filter drivers cannot distinguish Save As from normal file creation.
+        /// When enabled, any process that reads a protected file is blocked from creating new files.
         /// </summary>
-        public bool EnableFileBeingCopied
+        public bool AllowFileSaveAs
         {
             get
             {

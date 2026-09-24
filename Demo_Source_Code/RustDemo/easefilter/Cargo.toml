@@ -1,0 +1,16 @@
+[package]
+name = "easefilter"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bitflags = "2.11.1"
+chrono = "0.4"
+easefilter-sys = { path = "../easefilter-sys" }
+strum = { version = "0.27", features = ["derive"] }
+thiserror = "2"
+widestring = "1.2.0"
+
+[dev-dependencies]
+argon2 = "0.5"
+serial_test = "3"

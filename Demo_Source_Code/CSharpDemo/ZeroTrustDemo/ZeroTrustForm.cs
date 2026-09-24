@@ -24,7 +24,7 @@ namespace ZeroTrustDemo
 
             InitializeComponent();
 
-            fileFilter.AccessFlags = FilterAPI.AccessFlag.LEAST_ACCESS_FLAG;
+            fileFilter.AccessFlags = FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT;
 
             foreach (FileFilter savedFileFilter in GlobalConfig.FileFilters.Values)
             {
@@ -143,7 +143,7 @@ namespace ZeroTrustDemo
                 else
                 {
                     //if the accessFlag is 0, it is exclude filter rule,this is not what we want, so we need to include this flag.
-                    textBox_AccessRights.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG).ToString();
+                    textBox_AccessRights.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT).ToString();
                 }
 
             }
@@ -152,14 +152,14 @@ namespace ZeroTrustDemo
         private void textBox_ProtectedFolder_TextChanged(object sender, EventArgs e)
         {
             fileFilter = new FileFilter(textBox_ProtectedFolder.Text);
-            fileFilter.AccessFlags = FilterAPI.AccessFlag.LEAST_ACCESS_FLAG;
+            fileFilter.AccessFlags = FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT;
 
             InitAccessRightsListView(fileFilter);
         }      
 
         private void toolStripButton_AddProcessRights_Click(object sender, EventArgs e)
         {
-            ProcessRightInfo processRightInfo = new ProcessRightInfo(FilterAPI.ALLOW_MAX_RIGHT_ACCESS, "explorer.exe", "", "");
+            ProcessRightInfo processRightInfo = new ProcessRightInfo(FilterAPI.ALLOW_MAX_ACCESS_RIGHT, "explorer.exe", "", "");
             AccessRightForm rightForm = new AccessRightForm(processRightInfo);
             if(rightForm.ShowDialog() == DialogResult.OK)
             {
@@ -211,7 +211,7 @@ namespace ZeroTrustDemo
 
         private void toolStripButton_AddUserRights_Click(object sender, EventArgs e)
         {
-            AccessRightForm rightForm = new AccessRightForm("domain\\user1",FilterAPI.ALLOW_MAX_RIGHT_ACCESS);
+            AccessRightForm rightForm = new AccessRightForm("domain\\user1",FilterAPI.ALLOW_MAX_ACCESS_RIGHT);
             if (rightForm.ShowDialog() == DialogResult.OK)
             {
                 string userName = rightForm.userName;
@@ -266,14 +266,14 @@ namespace ZeroTrustDemo
             if (checkBox_Encryption.Checked)
             {
                 textBox_PassPhrase.Enabled = true;
-                fileFilter.AccessFlags = (FilterAPI.AccessFlag)FilterAPI.ALLOW_MAX_RIGHT_ACCESS|FilterAPI.AccessFlag.ENABLE_FILE_ENCRYPTION_RULE;
+                fileFilter.AccessFlags = (FilterAPI.AccessFlag)FilterAPI.ALLOW_MAX_ACCESS_RIGHT|FilterAPI.AccessFlag.ENABLE_FILE_ENCRYPTION_RULE;
                 //for encryption, by default we don't allow the encrypted file being decrypted for all processes.
                 fileFilter.AccessFlags &= ~FilterAPI.AccessFlag.ALLOW_READ_ENCRYPTED_FILES; 
             }
             else
             {
                 textBox_PassPhrase.Enabled = false;
-                fileFilter.AccessFlags = FilterAPI.AccessFlag.LEAST_ACCESS_FLAG;
+                fileFilter.AccessFlags = FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT;
             }
 
             InitAccessRightsListView(fileFilter);
@@ -305,7 +305,7 @@ namespace ZeroTrustDemo
         private void button_Start_Click(object sender, EventArgs e)
         {
             //To request a trial or production license key, please contact info@easefilter.com
-            //Requests from free email domains are not accepted        
+            //Requests from free email domains are not accepted.        
             string licenseKey = GlobalConfig.LicenseKey;
 
             GlobalConfig.filterType = FilterAPI.FilterType.CONTROL_FILTER | FilterAPI.FilterType.ENCRYPTION_FILTER | FilterAPI.FilterType.PROCESS_FILTER;

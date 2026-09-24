@@ -35,7 +35,7 @@ namespace EaseFilter.FolderLocker
         bool isProcessRights = true;
 
         public string accessName = string.Empty;
-        public uint accessFlags = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+        public uint accessFlags = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
         public string certName = string.Empty;
         public string imageSha256Name = string.Empty;
 

@@ -46,7 +46,7 @@ namespace AutoEncryptDemo
         /// <summary>
         /// the access flags of the shared file.
         /// </summary>
-        public uint AccessFlags = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+        public uint AccessFlags = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
         /// <summary>
         /// The file will be expired after the expire time in UTC format, and it can't be accessed.           
         /// </summary>
@@ -322,7 +322,7 @@ namespace AutoEncryptDemo
                 dRMData.CreationTime = DateTime.Now.ToFileTime();
 
                 dRMData.AESFlags = aesFlag;
-                dRMData.AccessFlags = FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+                dRMData.AccessFlags = FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
 
                 return true;
             }

@@ -29,7 +29,7 @@ namespace EaseFilter.FolderLocker
     {
         public FileFilter fileFilter = new FileFilter("");
 
-        FilterAPI.AccessFlag accessFlags = (FilterAPI.AccessFlag)FilterAPI.ALLOW_MAX_RIGHT_ACCESS;
+        FilterAPI.AccessFlag accessFlags = (FilterAPI.AccessFlag)FilterAPI.ALLOW_MAX_ACCESS_RIGHT;
         Dictionary<string, uint> userRightList = new Dictionary<string, uint>();
         Dictionary<string, ProcessRightInfo> processNameAccessRightList = new Dictionary<string, ProcessRightInfo>();
         bool isFormInitialized = false;
@@ -423,7 +423,7 @@ namespace EaseFilter.FolderLocker
         private void button_AddUserRights_Click_1(object sender, EventArgs e)
         {
             string defaultUserName = Environment.UserDomainName + "\\" + Environment.UserName;
-            Form_AccessRights accessRightsForm = new Form_AccessRights(false, FilterAPI.ALLOW_MAX_RIGHT_ACCESS, defaultUserName);
+            Form_AccessRights accessRightsForm = new Form_AccessRights(false, FilterAPI.ALLOW_MAX_ACCESS_RIGHT, defaultUserName);
 
             if (accessRightsForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -442,7 +442,7 @@ namespace EaseFilter.FolderLocker
 
         private void button_AddProcessRights_Click(object sender, EventArgs e)
         {
-            Form_AccessRights accessRightsForm = new Form_AccessRights(true, FilterAPI.ALLOW_MAX_RIGHT_ACCESS, "notepad.exe");
+            Form_AccessRights accessRightsForm = new Form_AccessRights(true, FilterAPI.ALLOW_MAX_ACCESS_RIGHT, "notepad.exe");
 
             if (accessRightsForm.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {

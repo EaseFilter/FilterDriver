@@ -33,7 +33,7 @@ namespace AutoEncryptDemo
         {
 
             //To request a trial or production license key, please contact info@easefilter.com
-            //Requests from free email domains are not accepted        
+            //Requests from free email domains are not accepted.        
             string licenseKey = GlobalConfig.LicenseKey;
 
             GlobalConfig.filterType = FilterAPI.FilterType.CONTROL_FILTER | FilterAPI.FilterType.ENCRYPTION_FILTER | FilterAPI.FilterType.PROCESS_FILTER;
@@ -127,7 +127,7 @@ namespace AutoEncryptDemo
                         if (processName.Trim().Length > 0)
                         {
                             //authorized the process with the read encrypted data right.
-                            fileFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_RIGHT_ACCESS, processName,"","");
+                            fileFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_ACCESS_RIGHT, processName,"","");
                         }
                     }
                 }
@@ -142,7 +142,7 @@ namespace AutoEncryptDemo
                             if (userName.Trim().Length > 0)
                             {
                                 //authorized the user with the read encrypted data right.
-                                fileFilter.UserAccessRightList.Add(userName, FilterAPI.ALLOW_MAX_RIGHT_ACCESS);
+                                fileFilter.UserAccessRightList.Add(userName, FilterAPI.ALLOW_MAX_ACCESS_RIGHT);
                             }
                         }
                     }
@@ -150,7 +150,7 @@ namespace AutoEncryptDemo
                     if (fileFilter.UserAccessRightList.Count > 0)
                     {
                         //set black list for all other users except the white list users.
-                        uint accessFlag = FilterAPI.ALLOW_MAX_RIGHT_ACCESS & ~(uint)FilterAPI.AccessFlag.ALLOW_READ_ENCRYPTED_FILES;
+                        uint accessFlag = FilterAPI.ALLOW_MAX_ACCESS_RIGHT & ~(uint)FilterAPI.AccessFlag.ALLOW_READ_ENCRYPTED_FILES;
                         //disable the decryption right, read the raw encrypted data for all except the authorized users.
                         fileFilter.UserAccessRightList.Add("*", accessFlag);
                     }
@@ -199,7 +199,7 @@ namespace AutoEncryptDemo
                     if (processName.Trim().Length > 0)
                     {
                         //authorized the process with the read encrypted data right.
-                        decryptFileFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_RIGHT_ACCESS, processName, "", "");
+                        decryptFileFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_ACCESS_RIGHT, processName, "", "");
                     }
                 }
             }
@@ -359,7 +359,7 @@ namespace AutoEncryptDemo
             System.Diagnostics.Process.Start("https://www.easefilter.com/kb/auto-file-drm-encryption-tool.htm");
         }
 
-     
+  
         private void getTagDataOfEncryptedFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InputForm inputForm = new InputForm("Input file name", "Plase input file name", "");
@@ -397,6 +397,11 @@ namespace AutoEncryptDemo
         private void button_DecryptInfo_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Set up the encryption/decryption folder. Encrypted files can only be copied to this folder via Windows Explorer, as the explorer.exe process is excluded from the filter rule.");
+        }
+
+        private void videoDemoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://youtu.be/Dbdj3FNn4Jo?si=9Cmn3_LQ63T2xW1q");
         }
     }
 }

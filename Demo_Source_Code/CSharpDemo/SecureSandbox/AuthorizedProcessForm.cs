@@ -52,7 +52,7 @@ namespace SecureSandbox
             StartPosition = FormStartPosition.CenterParent;
 
             textBox_ProcessName.Text = "notepad.exe";
-            textBox_AccessFlag.Text = FilterAPI.ALLOW_MAX_RIGHT_ACCESS.ToString();
+            textBox_AccessFlag.Text = FilterAPI.ALLOW_MAX_ACCESS_RIGHT.ToString();
 
             foreach (KeyValuePair<string, ProcessRightInfo> entry in fileFilter.TrustedProcessAccessRightList)
             {
@@ -255,7 +255,7 @@ namespace SecureSandbox
                 else
                 {
                     //if the accessFlag is 0, it is exclude filter rule,this is not what we want, so we need to include this flag.
-                    textBox_AccessFlag.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_FLAG).ToString();
+                    textBox_AccessFlag.Text = ((uint)FilterAPI.AccessFlag.LEAST_ACCESS_RIGHT).ToString();
                 }
 
                 SetCheckBoxValue();
@@ -502,7 +502,7 @@ namespace SecureSandbox
         private void button_AddProcessRights_Click(object sender, EventArgs e)
         {
             textBox_ProcessName.Text = "newprocessname.exe";
-            textBox_AccessFlag.Text = FilterAPI.ALLOW_MAX_RIGHT_ACCESS.ToString();
+            textBox_AccessFlag.Text = FilterAPI.ALLOW_MAX_ACCESS_RIGHT.ToString();
             SetCheckBoxValue();          
         }
 

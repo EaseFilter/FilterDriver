@@ -13,8 +13,8 @@
 
 #include "WinDataStructures.h"
 
-//To request a trial or production license key, please contact info@easefilter.com
-//Requests from free email domains are not accepted
+ //To request a trial or production license key, please contact info@easefilter.com
+ //Requests from free email domains are not accepted.
 #define	registerKey "************************************************************"
 
 #define MESSAGE_SEND_VERIFICATION_NUMBER	0xFF000001
@@ -608,6 +608,10 @@ typedef enum  _ProcessControlFlag
     /// is being created or duplicated.
     /// </summary>
     THREAD_HANDLE_OP_NOTIFICATION = 0x00002000,
+    /// <summary>
+    /// deny the new child process creation if the flag is on
+    /// </summary>
+    DENY_CHILD_PROCESS_CREATION = 0x00004000,
 
 }ProcessControlFlag;
 
@@ -629,7 +633,7 @@ typedef enum  _RegControlFlag
     REG_ALLOW_QUERY_MULTIPLE_VALUE_KEY = 0x00000400,
     REG_ALLOW_DELETE_VALUE_KEY = 0x00000800,
     REG_ALLOW_QUERY_KEY_SECURITY = 0x00001000,
-    REG_ALLOW_SET_KEY_SECRUITY = 0x00002000,
+    REG_ALLOW_SET_KEY_SECURITY = 0x00002000,
     REG_ALLOW_RESTORE_KEY = 0x00004000,
     REG_ALLOW_REPLACE_KEY = 0x00008000,
     REG_ALLOW_SAVE_KEY = 0x00010000,
@@ -975,11 +979,11 @@ typedef enum _AccessFlag
     /// If it is not exclude filter rule,the access flag can't be 0, at least you need to include this flag
     /// for filter driver with least access right to the file.
     /// </summary>
-    LEAST_ACCESS_FLAG = 0xf0000000,
+    LEAST_ACCESS_RIGHT = 0xf0000000,
     /// <summary>
     /// Allow the maximum right access.
     /// </summary>
-    ALLOW_MAX_RIGHT_ACCESS = 0xfffffff0,
+    ALLOW_MAX_ACCESS_RIGHT = 0xfffffff0,
 
 }AccessFlag;
 
@@ -1223,11 +1227,7 @@ typedef enum _BooleanConfig
     /// <summary>
     /// if it is true, the data protection will continue even the service process is stopped.
     /// </summary>
-    ENABLE_PROTECTION_IF_SERVICE_STOPPED = 0x00020000,
-    /// <summary>
-    /// if it is true and write encrypt info to cache is enabled, it will signal the system thread to write cache data to disk right away.
-    /// </summary>
-    ENABLE_SIGNAL_WRITE_ENCRYPT_INFO_EVENT = 0x00020000,
+    ENABLE_PROTECTION_IF_SERVICE_STOPPED = 0x00020000,    
     /// <summary>
     /// If the AccessFlag "SAVE_AS" flag is turned off, the application will be blocked from creating a new file after opening a protected file 
     /// when the filter rule’s boolean configuration ENABLE_BLOCK_SAVE_AS_FLAG is enabled.
@@ -1253,6 +1253,10 @@ typedef enum _BooleanConfig
     /// if it is true it will append the header to the file as the meta data of the stub file.
     /// </summary>
     ENABLE_STUB_FILE_HEADER = 0x00800000,
+    /// <summary>
+    /// if it is true and write encrypt info to cache is enabled, it will signal the system thread to write cache data to disk right away.
+    /// </summary>
+    ENABLE_SIGNAL_WRITE_ENCRYPT_INFO_EVENT = 0x01000000,
 
 } BooleanConfig;
 
@@ -1841,6 +1845,32 @@ AddFileFilterRule(ULONG accessFlag, WCHAR * filterMask, BOOL isResident = FALSE,
 extern "C" __declspec(dllexport)
 BOOL
 RemoveFilterRule(WCHAR * FilterMask);
+
+/// <summary>
+/// Appends a time-based restriction to the filter rule.
+/// When an operation occurs, if the system time falls within this restricted time window,
+/// the specified access flag will override the rule's default access rights. 
+/// You can call this method multiple times to configure distinct time windows for a single rule.
+/// </summary>
+/// <param name="filterMask">The filter mask of the filter rule.</param>
+/// <param name="accessFlag">The access flag to apply during this time window.</param>
+/// <param name="startTime">The start time of the time block (treated as daily elapsed minutes if <= 1440, otherwise treated as FILETIME).</param>
+/// <param name="endTime">The end time of the time block (treated as daily elapsed minutes if <= 1440, otherwise treated as FILETIME).</param>
+/// <returns>Returns true if the time restriction was successfully added; otherwise, false.</returns>
+extern "C" __declspec(dllexport)
+BOOL
+AddTimeRestrictionToFilterRule(
+    WCHAR * filterMask,
+    ULONG accessFlag,
+    LONGLONG startTime,
+    LONGLONG endTime);
+
+/// <summary>
+/// Clear all the time restrictions from the filter rule.
+/// </summary>
+extern "C" __declspec(dllexport)
+BOOL
+ClearTimeRestrictionsFromFilterRule(WCHAR * filterMask);
 
 /// <summary>
 ///Set an encryption folder, every encrypted file has the unique iv key, 

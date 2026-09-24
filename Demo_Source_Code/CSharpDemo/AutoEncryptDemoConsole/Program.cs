@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using EaseFilter.CommonObjects;
 using EaseFilter.FilterControl;
 
 namespace AutoEncryptDemoConsole
@@ -25,7 +26,7 @@ namespace AutoEncryptDemoConsole
         {
             string lastError = string.Empty;
             //To request a trial or production license key, please contact info@easefilter.com
-            //Requests from free email domains are not accepted
+            //Requests from free email domains are not accepted.
             string licenseKey = "****************************************************";            
 
             FilterAPI.FilterType filterType = FilterAPI.FilterType.CONTROL_FILTER | FilterAPI.FilterType.ENCRYPTION_FILTER | FilterAPI.FilterType.PROCESS_FILTER | FilterAPI.FilterType.MONITOR_FILTER;
@@ -64,6 +65,7 @@ namespace AutoEncryptDemoConsole
                     isDRMEnabled = true;
                 }
 
+                licenseKey = GlobalConfig.LicenseKey;
 
                 if (!filterControl.StartFilter(filterType, serviceThreads, connectionTimeOut, licenseKey, ref lastError))
                 {
@@ -120,7 +122,7 @@ namespace AutoEncryptDemoConsole
                         foreach (string processName in whiteListProcess)
                         {
                             //authorized the process, i.e."notepad.exe" with the read encrypted data right.
-                            fileFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_RIGHT_ACCESS, processName, "", "");
+                            fileFilter.AddTrustedProcessRight(FilterAPI.ALLOW_MAX_ACCESS_RIGHT, processName, "", "");
 
                         }
                     }

@@ -61,7 +61,7 @@ namespace EaseFilter.FilterControl
 
         /// <summary>
         /// The file access rights to the processes,the key is the FileFilterMask, the value is the access flag.
-        /// i.e. <c:\myfolder\*,ALLOW_MAX_RIGHT_ACCESS>
+        /// i.e. <c:\myfolder\*,ALLOW_MAX_ACCESS_RIGHT>
         /// </summary>
         public Dictionary<string, uint> FileAccessRightList
         {
@@ -113,6 +113,11 @@ namespace EaseFilter.FilterControl
                 if (null != NotifyProcessWasBlocked)
                 {
                     processEventArgs.EventName = "NewProcessCreationWasBlocked";
+                    if(messageSend.MessageType == (uint)FilterAPI.ProcessControlFlag.DENY_CHILD_PROCESS_CREATION)
+                    {
+                        processEventArgs.EventName = "CreatingChildProcessWasBlocked";
+                    }
+
                     NotifyProcessWasBlocked(this, processEventArgs);
                 }
             }
@@ -224,7 +229,7 @@ namespace EaseFilter.FilterControl
         public ProcessEventArgs(FilterAPI.MessageSendData messageSend)
             : base(messageSend)
         {
-            FileName = ImageFileName = messageSend.FileName;
+            FileName = ImageFileName = messageSend.FileName.Replace("\\??\\","");
 
             if (messageSend.DataBufferLength > 0)
             {
@@ -242,18 +247,18 @@ namespace EaseFilter.FilterControl
 
                 switch (messageSend.FilterCommand)
                 {
+                    case (uint)FilterAPI.FilterCommand.FILTER_SEND_DENIED_PROCESS_CREATION_EVENT:
                     case (uint)FilterAPI.FilterCommand.FILTER_SEND_PROCESS_CREATION_INFO:
                         {
-                            Description = "ParentPid:" + ParentProcessId + ";CreatingPid:" + CreatingProcessId + ";CreatingThreadId:" + CreatingThreadId
-                                + ";FileOpenNameAvailable:" + FileOpenNameAvailable + ";CommandLine:" + CommandLine;
+                            string parentProcessName = string.Empty;
+                            Utils.DecodeProcessName(ParentProcessId, out parentProcessName);
+                            Description = "ParentPid:" + ParentProcessId + ";parentProcessName:" + parentProcessName + ";CommandLine:" + CommandLine;
 
                             break;
                         }
                     case (uint)FilterAPI.FilterCommand.FILTER_SEND_LOAD_IMAGE_NOTIFICATION:
                         {
-                            ImageFileName = ProcessName;
-
-                            Description = "The image " + FileName + " was loaded.";
+                            Description = "The image " + FileName + " was loaded by " + ProcessName;
                             break;
                         }
                     case (uint)FilterAPI.FilterCommand.FILTER_SEND_PROCESS_HANDLE_INFO:

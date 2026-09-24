@@ -14,6 +14,13 @@ typedef struct _PROCESS_RIGHT_INFO
 	ULONG AccessFlags;
 }PROCESS_RIGHT_INFO, * PPROCESS_RIGHT_INFO;
 
+typedef struct _TIME_RESTRICTION_INFO
+{
+	ULONG AccessFlag;
+	LONGLONG StartTime;
+	LONGLONG EndTime;
+}TIME_RESTRICTION_INFO, * PTIME_RESTRICTION_INFO;
+
  class ProcessFilterRule
  {
 		public:
@@ -226,6 +233,7 @@ public:
     std::vector<ULONG> ExcludeProcessIdList;
     std::vector<std::wstring> IncludeUserNameList;
     std::vector<std::wstring> ExcludeUserNameList;
+	std::vector<TIME_RESTRICTION_INFO> TimeRestrictionList;
 
     /// <summary>
     /// Enable the control file filter rule in boot time.
@@ -297,7 +305,7 @@ public:
 		IsResident = false;
 		BooleanConfig = 0;
 		ControlFileIOEventFilter = 0;
-		AccessFlag = ALLOW_MAX_RIGHT_ACCESS;
+		AccessFlag = ALLOW_MAX_ACCESS_RIGHT;
 		FileChangeEventFilter = 0;
 		MonitorFileIOEventFilter = 0;
 			
@@ -452,8 +460,14 @@ public:
 		return true;
 	}
 
-
-	bool AddAccessRightsToProcessName(WCHAR* _processName, ULONG accessFlag, WCHAR* certificateName = NULL, CHAR* imageSha256Hash = NULL )
+	/// <summary>
+	/// Add the access rights to the process which was signed or has the same sha256 hash
+	/// </summary>
+	/// <param name="accessFlags">the access rights for the process</param>
+	/// <param name="processNameFilterMask">the process name filter mask</param>
+	/// <param name="certificateName">the certificate name to sign the process, it is optional</param>
+	/// <param name="ImageSha256Hash">the sha256 hash of the process, it is optional</param>
+	bool AddTrustedProcessRight(WCHAR* _processName, ULONG accessFlag, WCHAR* certificateName = NULL, CHAR* imageSha256Hash = NULL )
 	{
 		if( NULL == _processName )
 		{
@@ -484,6 +498,12 @@ public:
 		return true;
 	}
 
+
+	bool AddProcessRight(WCHAR* _processName, ULONG accessFlag)
+	{
+		return AddTrustedProcessRight(_processName, accessFlag, NULL, NULL);
+	}
+
 	void AddAccessRightsToProcessId(ULONG _processId, ULONG accessFlag)
 	{
 		ProcessIdAccessRightList.insert(std::pair<ULONG, ULONG >(_processId, accessFlag));
@@ -501,6 +521,27 @@ public:
 		UserNameAccessRightList.insert(std::pair<std::wstring, ULONG >(userName, accessFlag));
 
 		return true;
+	}
+
+	/// <summary>
+	/// Appends a time-based restriction to the filter rule.
+	/// When an operation occurs, if the system time falls within this restricted time window,
+	/// the specified access flag will override the rule's default access rights. 
+	/// You can call this method multiple times to configure distinct time windows for a single rule.
+	/// </summary>
+	/// <param name="accessFlag">The access flag to apply during this time window.</param>
+	/// <param name="startTime">The start time of the time block (treated as daily elapsed minutes if <= 1440, otherwise treated as FILETIME).</param>
+	/// <param name="endTime">The end time of the time block (treated as daily elapsed minutes if <= 1440, otherwise treated as FILETIME).</param>
+	void AddTimeRestriction(ULONG accessFlag, LONGLONG StartTime, LONGLONG EndTime)
+	{
+		TIME_RESTRICTION_INFO timeRestrictInfo;
+		timeRestrictInfo.AccessFlag = accessFlag;
+		timeRestrictInfo.StartTime = StartTime;
+		timeRestrictInfo.EndTime = EndTime;
+
+		TimeRestrictionList.push_back(timeRestrictInfo);
+
+		return;
 	}
 
 };
